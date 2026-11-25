@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Expense Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Manrope", "system-ui", "sans-serif"] },
+          colors: { ink: "#14202B", paper: "#EEF2F1", teal: "#0F766E", rust: "#B4412E" }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-paper text-ink font-sans min-h-screen">
+  <main class="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Expense Tracker</h1>
+      <p class="mt-1 text-ink/70">Log what comes in and what goes out. Your data stays in this browser.</p>
+    </header>
+
+    <!-- Summary -->
+    <section class="grid sm:grid-cols-3 gap-4 mb-8" aria-label="Summary">
+      <div class="bg-ink text-white rounded-xl p-5">
+        <p class="text-sm text-white/70">Balance</p>
+        <p id="balance" class="text-3xl font-extrabold mt-1">₹0</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-ink/10">
+        <p class="text-sm text-ink/70">Income</p>
+        <p id="income" class="text-2xl font-bold text-teal mt-1">₹0</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-ink/10">
+        <p class="text-sm text-ink/70">Expenses</p>
+        <p id="expense" class="text-2xl font-bold text-rust mt-1">₹0</p>
+      </div>
+    </section>
+
+    <div class="grid lg:grid-cols-5 gap-8">
+      <!-- Add form -->
+      <section class="lg:col-span-2" aria-labelledby="add-heading">
+        <h2 id="add-heading" class="text-xl font-bold mb-3">Add a transaction</h2>
+        <div id="form" class="bg-white rounded-xl border border-ink/10 p-5 space-y-4">
+          <div>
+            <label for="title" class="block text-sm font-semibold mb-1">Description</label>
+            <input id="title" type="text" maxlength="40" placeholder="e.g. Lunch with friends"
+                   class="w-full rounded-lg border border-ink/20 px-3 py-2" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="amount" class="block text-sm font-semibold mb-1">Amount (₹)</label>
+              <input id="amount" type="number" min="1" step="1" placeholder="250"
+                     class="w-full rounded-lg border border-ink/20 px-3 py-2" />
+            </div>
+            <div>
+              <label for="type" class="block text-sm font-semibold mb-1">Type</label>
+              <select id="type" class="w-full rounded-lg border border-ink/20 px-3 py-2 bg-white">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="category" class="block text-sm font-semibold mb-1">Category</label>
+              <select id="category" class="w-full rounded-lg border border-ink/20 px-3 py-2 bg-white">
+                <option>Food</option>
+                <option>Travel</option>
+                <option>Study</option>
+                <option>Shopping</option>
+                <option>Bills</option>
+                <option>Salary</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="date" class="block text-sm font-semibold mb-1">Date</label>
+              <input id="date" type="date" class="w-full rounded-lg border border-ink/20 px-3 py-2" />
+            </div>
+          </div>
+          <p id="error" class="text-sm text-rust min-h-[1.25rem]" role="alert"></p>
+          <button id="add-btn" type="button"
+                  class="w-full bg-teal text-white font-bold rounded-lg py-2.5 hover:bg-teal/90 transition-colors">
+            Add transaction
+          </button>
+        </div>
+
+        <h2 class="text-xl font-bold mt-8 mb-3">Spending by category</h2>
+        <div id="breakdown" class="bg-white rounded-xl border border-ink/10 p-5 space-y-3"></div>
+      </section>
+
+      <!-- List -->
+      <section class="lg:col-span-3" aria-labelledby="list-heading">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <h2 id="list-heading" class="text-xl font-bold">Transactions</h2>
+          <div class="flex gap-2">
+            <select id="filter-type" aria-label="Filter by type"
+                    class="rounded-lg border border-ink/20 px-2 py-1.5 text-sm bg-white">
+              <option value="all">All types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expenses</option>
+            </select>
+            <select id="filter-category" aria-label="Filter by category"
+                    class="rounded-lg border border-ink/20 px-2 py-1.5 text-sm bg-white">
+              <option value="all">All categories</option>
+            </select>
+          </div>
+        </div>
+        <ul id="list" class="space-y-2"></ul>
+        <p id="empty" class="hidden bg-white rounded-xl border border-dashed border-ink/20 p-8 text-center text-ink/60">
+          Nothing here yet. Add your first transaction to get started.
+        </p>
+        <button id="clear-btn" type="button" class="mt-4 text-sm text-rust underline">Clear all data</button>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

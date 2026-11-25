@@ -1,0 +1,18 @@
+/* Small custom styles on top of Tailwind */
+input:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid #0F766E;
+  outline-offset: 2px;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #B4412E;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill { transition: none; }
+}
